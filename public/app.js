@@ -7,7 +7,8 @@ let rec = null;
 let retries = 0;
 
 function t(key, vars = {}) {
-  let s = T[state.lang][key];
+  let s = key.split(".").reduce((o, k) => (o ? o[k] : undefined), T[state.lang]);
+  if (s === undefined) s = key.split(".").reduce((o, k) => (o ? o[k] : undefined), T.en) || key;
   for (const k in vars) s = s.replace("{" + k + "}", vars[k]);
   return s;
 }
@@ -16,7 +17,10 @@ function t(key, vars = {}) {
 function addMsg(text, who) {
   const d = document.createElement("div");
   d.className = "msg " + who;
-  d.textContent = text;
+  const b = document.createElement("div");
+  b.className = "b";
+  b.textContent = text;
+  d.appendChild(b);
   $("chat").appendChild(d);
   d.scrollIntoView({ behavior: "smooth", block: "end" });
 }
@@ -34,20 +38,30 @@ function addCard(html) {
   const d = document.createElement("div");
   d.className = "card";
   d.innerHTML = html;
-  $("cards").appendChild(d);
+  $("chat").appendChild(d);
+  d.scrollIntoView({ behavior: "smooth", block: "end" });
 }
 function setStatus(msg) { $("status").textContent = msg; }
 
 // ---------- speech out ----------
+const STEP_INDEX = { units: 0, prev: 1, amount: 2, confirm: 3, appliance: 4, menu: 5, roof: 5, complaint: 5 };
+function updateSteps() {
+  const now = STEP_INDEX[state.step] ?? 0;
+  document.querySelectorAll("#steps li").forEach((li, i) => {
+    li.className = i < now ? "done" : i === now ? "now" : "";
+  });
+}
 function say(text, then) {
   addMsg(text, "bot");
+  updateSteps();
   if (!("speechSynthesis" in window)) { if (then) then(); return; }
   speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = SPEECH_LANG[state.lang];
   u.rate = 0.9;
   let done = false;
-  const finish = () => { if (!done) { done = true; if (then) then(); } };
+  const finish = () => { if (!done) { done = true; $("mic").classList.remove("speaking"); if (then) then(); } };
+  $("mic").classList.add("speaking");
   u.onend = finish;
   u.onerror = finish;
   setTimeout(finish, 2000 + text.length * 120); // safety net if a voice is missing
@@ -133,20 +147,18 @@ function topTips() {
   const order = [state.appliance, ...Object.keys(APPLIANCES).filter((k) => k !== state.appliance)].slice(0, 3);
   return order.map((k) => ({ key: k, rupees: Math.round(APPLIANCES[k].saveUnits * rate) }));
 }
-function barChart(prev, units) {
-  const max = Math.max(prev, units, 1);
-  const bar = (v, y, color, label) =>
-    `<rect x="70" y="${y}" width="${Math.round((v / max) * 210)}" height="22" rx="4" fill="${color}"/>` +
-    `<text x="64" y="${y + 16}" text-anchor="end" font-size="13">${label}</text>` +
-    `<text x="${76 + Math.round((v / max) * 210)}" y="${y + 16}" font-size="13">${v}</text>`;
-  return `<svg viewBox="0 0 340 62" width="100%" role="img" aria-label="${prev} to ${units} units">` +
-    bar(prev, 4, "#d6b46a", t("prev").slice(0, 10)) + bar(units, 34, units > prev ? "#c0392b" : "#1e8449", "now") + `</svg>`;
+function bars(rows) {
+  const max = Math.max(...rows.map((r) => r.v), 1);
+  return `<div class="bars">` + rows.map((r) =>
+    `<div class="bar"><span>${r.label}</span><div class="track"><div class="fill ${r.hot ? "hot" : ""}" data-w="${Math.round((r.v / max) * 100)}" style="width:${Math.round((r.v / max) * 100)}%"></div></div><b>${r.text}</b></div>`
+  ).join("") + `</div>`;
 }
 
 // ---------- conversation ----------
 function begin() {
+  $("app").classList.add("started"); $("hero").hidden = false; $("steps").hidden = false;
   state.step = "units"; state.bill = {}; state.appliance = null; state.complaint = null;
-  $("cards").innerHTML = ""; setChoices([]);
+  setChoices([]);
   ask(t("greet"));
 }
 
@@ -215,12 +227,20 @@ function chooseAppliance(k) {
   const reason = T[state.lang].reasons[k];
   const text = a.diffUnits === 0 ? t("same", { reason })
     : t("explain", { dir: t(a.up ? "dirUp" : "dirDown"), pct: a.pct, p: prev, u: units, diff: a.diffRupees, reason });
-  $("cards").innerHTML = "";
-  addCard(`<h3>${t("cardBill")}</h3><div class="big">₹${amount}</div>
-    <div>${units} ${t("units")} · ${t("prev")}: ${prev} ${t("units")}
-    <span class="${a.up ? "up" : "down"}"> ${a.up ? "▲" : "▼"} ${a.pct}%</span></div>
-    ${barChart(prev, units)}
-    <div class="small">${t("expected")}: ₹${a.check.expected} (${a.check.diffPct >= 0 ? "+" : ""}${a.check.diffPct}%)</div>`);
+  const flaggedBill = a.check.diffPct >= 25;
+  addCard(`<h3>${t("cardBill")}</h3>
+    <div class="amount"><span class="big">₹${amount}</span>
+      <span class="chip ${a.up ? "up" : "down"}">${a.up ? "▲" : "▼"} ${a.pct}%</span></div>
+    <div class="meta">${units} ${t("units")} · ${t("prev")}: ${prev} ${t("units")}</div>
+    ${bars([
+      { label: t("prev"), v: prev, text: prev, hot: false },
+      { label: t("units"), v: units, text: units, hot: a.up },
+    ])}
+    ${bars([
+      { label: t("expected"), v: a.check.expected, text: "₹" + a.check.expected, hot: false },
+      { label: t("cardBill"), v: amount, text: "₹" + amount, hot: flaggedBill },
+    ])}
+    <div class="verdict ${flaggedBill ? "warn" : "ok"}">${flaggedBill ? "⚠️" : "✅"} ${a.check.diffPct >= 0 ? "+" : ""}${a.check.diffPct}% ${t("expected").toLowerCase()}</div>`);
   showMenu();
   const flagged = a.check.diffPct >= 25;
   const verdict = flagged
@@ -241,8 +261,8 @@ function doSavings() {
   const tips = topTips();
   const total = tips.reduce((n, x) => n + x.rupees, 0);
   const list = tips.map((x, i) => `${i + 1}. ${T[state.lang].tips[x.key]} (₹${x.rupees})`).join(" ");
-  addCard(`<h3>${t("savingsCard")}</h3><div class="big">₹${total}</div>` +
-    tips.map((x) => `<div>• ${T[state.lang].tips[x.key]} <b>₹${x.rupees}</b></div>`).join(""));
+  addCard(`<h3>${t("savingsCard")}</h3><div class="amount"><span class="big">₹${total}</span><span class="meta">/ month</span></div>` +
+    tips.map((x) => `<div class="tip"><span>${T[state.lang].tips[x.key]}</span><b>₹${x.rupees}</b></div>`).join(""));
   say(t("savings", { list, total }), () => ask(t("more")));
 }
 
@@ -252,7 +272,7 @@ function doComplaint() {
   state.step = "complaint";
   const { units, prev, amount } = state.bill;
   state.complaint = t("complaintText", { u: units, p: prev, a: amount });
-  addCard(`<h3>✉️</h3><div>${state.complaint}</div>`);
+  addCard(`<h3>✉️</h3><div class="draft">${state.complaint}</div>`);
   setChoices([[t("ch.yes"), () => handleInput(t("ch.yes"))], [t("ch.noo"), () => handleInput(t("ch.noo"))]]);
   ask(t("complaintAsk"));
 }
@@ -265,7 +285,7 @@ async function saveComplaint() {
       body: JSON.stringify({ text: state.complaint, lang: state.lang, bill: state.bill }),
     });
     const item = await r.json();
-    addCard(`<h3>✅ ${item.id}</h3><div>${item.createdAt.slice(0, 10)}</div>`);
+    addCard(`<h3>✅ ${item.id}</h3><div class="meta">${item.createdAt.slice(0, 10)}</div>`);
     say(t("complaintDone", { id: item.id }), () => ask(t("more")));
   } catch { say(t("complaintNo"), () => ask(t("more"))); }
 }
@@ -275,7 +295,7 @@ function doFamily() {
   const { units, prev, amount } = state.bill;
   const tip = T[state.lang].tips[state.appliance] || "";
   const msg = t("waText", { u: units, p: prev, a: amount, tip });
-  addCard(`<a class="btn" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(msg)}">WhatsApp</a>`);
+  addCard(`<a class="btn" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(msg)}">💬 WhatsApp</a>`);
   say(t("wa"), () => ask(t("more")));
 }
 
@@ -299,4 +319,4 @@ document.querySelectorAll(".langs button").forEach((b) => {
 if (!SR) setStatus(T.en.noMic); else setStatus(T.en.tapMic);
 if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 // Browsers block audio until the user interacts, so wait for the first tap.
-addMsg("👋 Tap the 🎤 to begin / माइक दबाइए / માઇક દબાવો", "bot");
+addMsg("👋 Tap the mic to begin · माइक दबाइए · માઇક દબાવો", "bot");

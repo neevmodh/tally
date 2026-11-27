@@ -28,12 +28,21 @@ run('handleInput("250")'); ok("prev", run("state.bill.prev") === 250);
 run('handleInput("two thousand four hundred")'); ok("amount", run("state.bill.amount") === 2400);
 run('handleInput("yes")'); ok("moves to appliance", run("state.step") === "appliance");
 run('handleInput("the AC mostly")'); ok("appliance", run("state.appliance") === "ac");
-const cards = els.cards.children.map((c) => c.innerHTML).join("");
-ok("bill card has chart", cards.includes("<svg"));
+const cards = els.chat.children.map((c) => c.innerHTML || "").join("");
+ok("bill card has charts and verdict", cards.includes("class=\"bars\"") && cards.includes("verdict warn"));
 ok("anomaly flagged for inflated bill", spoken.some((s) => s.includes("percent higher")));
-run('handleInput("savings")'); ok("savings card", els.cards.children.some((c) => c.innerHTML.includes("₹")));
+run('handleInput("savings")'); ok("savings card", els.chat.children.some((c) => (c.innerHTML || "").includes("tip")));
 run('handleInput("complaint")'); ok("complaint step", run("state.step") === "complaint");
 run('handleInput("yes")');
+
+// choice buttons must have real labels (regression: nested i18n keys returned undefined)
+run('state.step = "menu"; showMenu()');
+const labels = els.choices.children.map((b) => b.textContent);
+ok("menu buttons have labels", labels.length === 5 && labels.every((l) => l && l !== "undefined" && l.length > 2));
+run('setChoices(applianceChoices())');
+ok("appliance buttons have labels", els.choices.children.every((b) => b.textContent && b.textContent !== "undefined"));
+ok("t() resolves dotted keys in all languages", ["en","hi","gu"].every((l) => { run('state.lang="' + l + '"'); return run('t("ch.yes")') !== "ch.yes"; }));
+run('state.lang = "en"');
 
 // Hindi switch by script + fair bill
 spoken.length = 0;

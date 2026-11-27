@@ -2,36 +2,59 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Tally</title>
+  <meta name="description" content="Talk to your electricity bill in Gujarati, Hindi or English.">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg">
-  <meta name="theme-color" content="#f5a623">
+  <meta name="theme-color" content="#0f766e">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>⚡ Tally</h1>
-    <div class="langs" role="group" aria-label="Language">
-      <button data-lang="en" class="on">English</button>
-      <button data-lang="hi">हिन्दी</button>
-      <button data-lang="gu">ગુજરાતી</button>
-    </div>
-  </header>
+  <div id="app">
+    <header class="top">
+      <div class="brand"><img src="icon.svg" alt="" width="34" height="34"><span>Tally</span></div>
+      <div class="langs" role="group" aria-label="Language">
+        <button data-lang="en" class="on">EN</button>
+        <button data-lang="hi">हिं</button>
+        <button data-lang="gu">ગુ</button>
+      </div>
+    </header>
 
-  <main>
-    <section id="chat" aria-live="polite"></section>
-    <section id="cards"></section>
-    <section id="choices"></section>
-  </main>
+    <section id="hero" class="hero">
+      <h1>Talk to your <em>bill</em>.</h1>
+      <p>Say your units and amount. Tally explains why it changed, checks if it is fair, and helps you act.</p>
+      <ul class="feats">
+        <li>🗣 Gujarati · Hindi · English</li>
+        <li>🔍 Fair-bill check</li>
+        <li>💰 Savings in rupees</li>
+        <li>✉️ Complaint in one tap</li>
+      </ul>
+    </section>
 
-  <footer>
+    <ol id="steps" class="steps" aria-label="Progress" hidden>
+      <li>Units</li><li>Last month</li><li>Amount</li><li>Confirm</li><li>Usage</li><li>Help</li>
+    </ol>
+
+    <main>
+      <section id="chat" aria-live="polite"></section>
+      <section id="choices"></section>
+    </main>
+  </div>
+
+  <footer class="dock">
     <div id="heard" aria-live="polite"></div>
-    <button id="mic" aria-label="Tap and speak">🎤</button>
-    <form id="textform">
-      <input id="textin" placeholder="Or type here" autocomplete="off">
-      <button type="submit">Send</button>
-    </form>
+    <div class="dockrow">
+      <form id="textform">
+        <input id="textin" placeholder="Type instead" autocomplete="off" aria-label="Type your answer">
+        <button type="submit" aria-label="Send">➤</button>
+      </form>
+      <button id="mic" aria-label="Tap and speak">
+        <span class="ring"></span>
+        <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <svg class="micicon" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path fill="currentColor" d="M12 15a3.5 3.5 0 0 0 3.5-3.5v-6a3.5 3.5 0 0 0-7 0v6A3.5 3.5 0 0 0 12 15Zm6-3.5a1 1 0 1 0-2 0 4 4 0 0 1-8 0 1 1 0 1 0-2 0 6 6 0 0 0 5 5.92V20H9.5a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H13v-2.58A6 6 0 0 0 18 11.5Z"/></svg>
+      </button>
+    </div>
     <p id="status"></p>
   </footer>
 

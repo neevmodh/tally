@@ -38,3 +38,5 @@ Prototype only. Spoken number words are parsed for English and Hindi (not Gujara
     node test-numbers.js && node test-tariff.js && node test-flow.js
 
 No dependencies needed. `test-flow.js` drives the real conversation logic against a fake DOM.
+
+Browser test (app running on :3000, `npm i playwright` somewhere on the path): `node test-e2e.js` clicks and types through the whole flow in Chrome on mobile and desktop, in light and dark mode, in all three languages.
