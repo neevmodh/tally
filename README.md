@@ -1,4 +1,6 @@
-# Bolo Bijli
+# Tally
+
+Talk to your bill.
 
 A voice-first assistant that explains an electricity bill in Gujarati, Hindi or English and helps the user act on it.
 Theme: Public infrastructure and civic services. Built for Scaler x Wispr Flow "India Runs on Voice", Round 2.

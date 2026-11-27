@@ -12,7 +12,7 @@ const APPLIANCES = {
 
 const T = {
   en: {
-    greet: "Namaste! I am Bolo Bijli. I will help you understand your electricity bill. How many units did you use this month?",
+    greet: "Namaste! I am Tally. I will help you understand your electricity bill. How many units did you use this month?",
     askPrev: "And how many units did you use last month?",
     askAmt: "What is the bill amount in rupees?",
     badNum: "Sorry, I did not catch a number. Please say it again, or type it.",
@@ -49,7 +49,7 @@ const T = {
     complaintNo: "Okay, I did not save it.",
     complaintText: "To the DISCOM, I request a review of my electricity bill. This month I was billed {a} rupees for {u} units, against {p} units last month. The increase looks too high. Please check my meter reading and billing.",
     wa: "I have prepared a message for your family. Tap the green button.",
-    waText: "Bolo Bijli summary: this month {u} units, bill {a} rupees, last month {p} units. Top tip: {tip}",
+    waText: "Tally summary: this month {u} units, bill {a} rupees, last month {p} units. Top tip: {tip}",
     more: "Anything else?",
     bye: "Thank you. Save power, save money.",
     unknown: "Sorry, I did not understand. You can say savings, complaint, solar, family, or no.",
@@ -67,7 +67,7 @@ const T = {
     },
   },
   hi: {
-    greet: "नमस्ते! मैं बोलो बिजली हूँ। मैं आपका बिजली का बिल समझने में मदद करूँगा। इस महीने आपने कितनी यूनिट बिजली इस्तेमाल की?",
+    greet: "नमस्ते! मैं टैली हूँ। मैं आपका बिजली का बिल समझने में मदद करूँगा। इस महीने आपने कितनी यूनिट बिजली इस्तेमाल की?",
     askPrev: "और पिछले महीने कितनी यूनिट थी?",
     askAmt: "बिल कितने रुपये का है?",
     badNum: "माफ़ कीजिए, मुझे नंबर समझ नहीं आया। कृपया दोबारा बोलिए या लिख दीजिए।",
@@ -104,7 +104,7 @@ const T = {
     complaintNo: "ठीक है, मैंने इसे सेव नहीं किया।",
     complaintText: "डिस्कॉम को, मैं अपने बिजली बिल की जाँच का अनुरोध करता हूँ। इस महीने {u} यूनिट के लिए {a} रुपये का बिल आया, जबकि पिछले महीने {p} यूनिट थी। बढ़ोतरी बहुत ज़्यादा लगती है। कृपया मीटर रीडिंग और बिलिंग जाँचें।",
     wa: "मैंने आपके परिवार के लिए संदेश तैयार किया है। हरा बटन दबाइए।",
-    waText: "बोलो बिजली सारांश: इस महीने {u} यूनिट, बिल {a} रुपये, पिछले महीने {p} यूनिट। मुख्य सुझाव: {tip}",
+    waText: "टैली सारांश: इस महीने {u} यूनिट, बिल {a} रुपये, पिछले महीने {p} यूनिट। मुख्य सुझाव: {tip}",
     more: "और कुछ?",
     bye: "धन्यवाद। बिजली बचाइए, पैसे बचाइए।",
     unknown: "माफ़ कीजिए, समझ नहीं आया। आप बचत, शिकायत, सोलर, परिवार या नहीं बोल सकते हैं।",
@@ -122,7 +122,7 @@ const T = {
     },
   },
   gu: {
-    greet: "નમસ્તે! હું બોલો બિજલી છું. હું તમને તમારું લાઇટ બિલ સમજવામાં મદદ કરીશ. આ મહિને તમે કેટલા યુનિટ વીજળી વાપરી?",
+    greet: "નમસ્તે! હું ટેલી છું. હું તમને તમારું લાઇટ બિલ સમજવામાં મદદ કરીશ. આ મહિને તમે કેટલા યુનિટ વીજળી વાપરી?",
     askPrev: "અને ગયા મહિને કેટલા યુનિટ હતા?",
     askAmt: "બિલ કેટલા રૂપિયાનું છે?",
     badNum: "માફ કરજો, મને નંબર સમજાયો નહીં. કૃપા કરીને ફરી બોલો અથવા લખો.",
@@ -159,7 +159,7 @@ const T = {
     complaintNo: "ઠીક છે, મેં તેને સેવ કરી નથી.",
     complaintText: "ડિસ્કોમને, હું મારા વીજ બિલની તપાસ માટે વિનંતી કરું છું. આ મહિને {u} યુનિટ માટે {a} રૂપિયાનું બિલ આવ્યું, જ્યારે ગયા મહિને {p} યુનિટ હતા. વધારો ઘણો વધારે લાગે છે. કૃપા કરીને મીટર રીડિંગ અને બિલિંગ તપાસો.",
     wa: "મેં તમારા પરિવાર માટે સંદેશ તૈયાર કર્યો છે. લીલું બટન દબાવો.",
-    waText: "બોલો બિજલી સારાંશ: આ મહિને {u} યુનિટ, બિલ {a} રૂપિયા, ગયા મહિને {p} યુનિટ. મુખ્ય સૂચન: {tip}",
+    waText: "ટેલી સારાંશ: આ મહિને {u} યુનિટ, બિલ {a} રૂપિયા, ગયા મહિને {p} યુનિટ. મુખ્ય સૂચન: {tip}",
     more: "બીજું કંઈ?",
     bye: "આભાર. વીજળી બચાવો, પૈસા બચાવો.",
     unknown: "માફ કરજો, સમજાયું નહીં. તમે બચત, ફરિયાદ, સોલર, પરિવાર અથવા ના બોલી શકો.",

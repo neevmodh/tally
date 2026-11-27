@@ -1,4 +1,4 @@
-// Bolo Bijli - tiny dependency-free server: serves the PWA and stores drafted complaints.
+// Tally - tiny dependency-free server: serves the PWA and stores drafted complaints.
 const http = require("http");
 const fs = require("fs");
 const path = require("path");
@@ -72,4 +72,4 @@ const server = http.createServer(async (req, res) => {
   });
 });
 
-server.listen(PORT, () => console.log("Bolo Bijli running on http://localhost:" + PORT));
+server.listen(PORT, () => console.log("Tally running on http://localhost:" + PORT));

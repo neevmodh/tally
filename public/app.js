@@ -1,4 +1,4 @@
-// Bolo Bijli - voice-first flow. Uses the browser's built-in speech recognition and synthesis (no API keys).
+// Tally - voice-first flow. Uses the browser's built-in speech recognition and synthesis (no API keys).
 const RATE_PER_UNIT = 5.5; // illustrative marginal rupees per unit, for savings estimates only
 const $ = (id) => document.getElementById(id);
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
