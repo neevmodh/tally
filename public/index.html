@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bolo Bijli</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg">
+  <meta name="theme-color" content="#f5a623">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>⚡ Bolo Bijli</h1>
+    <div class="langs" role="group" aria-label="Language">
+      <button data-lang="en" class="on">English</button>
+      <button data-lang="hi">हिन्दी</button>
+      <button data-lang="gu">ગુજરાતી</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="chat" aria-live="polite"></section>
+    <section id="cards"></section>
+    <section id="choices"></section>
+  </main>
+
+  <footer>
+    <div id="heard" aria-live="polite"></div>
+    <button id="mic" aria-label="Tap and speak">🎤</button>
+    <form id="textform">
+      <input id="textin" placeholder="Or type here" autocomplete="off">
+      <button type="submit">Send</button>
+    </form>
+    <p id="status"></p>
+  </footer>
+
+  <script src="i18n.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+* { box-sizing: border-box; }
+body { margin: 0; font-family: system-ui, "Noto Sans Devanagari", "Noto Sans Gujarati", sans-serif; background: #fff8e7; color: #222; font-size: 20px; padding-bottom: 230px; }
+header { display: flex; flex-wrap: wrap; gap: 8px; justify-content: space-between; align-items: center; padding: 12px 16px; background: #f5a623; }
+h1 { margin: 0; font-size: 24px; }
+.langs button { font-size: 16px; padding: 8px 12px; border: 2px solid #222; background: #fff; border-radius: 20px; margin-left: 4px; }
+.langs button.on { background: #222; color: #fff; }
+main { max-width: 720px; margin: 0 auto; padding: 12px; }
+.msg { padding: 14px 16px; margin: 10px 0; border-radius: 16px; line-height: 1.4; max-width: 92%; }
+.bot { background: #fff; border: 2px solid #f5a623; }
+.user { background: #dff1ff; margin-left: auto; text-align: right; }
+.card { background: #fff; border-radius: 16px; padding: 14px 16px; margin: 10px 0; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
+.card h3 { margin: 0 0 6px; font-size: 18px; }
+.card .big { font-size: 28px; font-weight: 700; }
+.up { color: #c0392b; } .down { color: #1e8449; }
+#choices { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+#choices button { font-size: 18px; padding: 12px 16px; border-radius: 14px; border: 2px solid #f5a623; background: #fff; }
+footer { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border-top: 3px solid #f5a623; padding: 10px; text-align: center; }
+#mic { width: 84px; height: 84px; border-radius: 50%; font-size: 38px; border: none; background: #f5a623; box-shadow: 0 3px 10px rgba(0,0,0,.3); }
+#mic.listening { background: #e74c3c; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { transform: scale(1.1); } }
+#heard { min-height: 24px; color: #555; font-style: italic; font-size: 16px; }
+#textform { display: flex; gap: 6px; max-width: 520px; margin: 8px auto 0; }
+#textin { flex: 1; font-size: 18px; padding: 10px; border-radius: 10px; border: 2px solid #ccc; }
+#textform button { font-size: 16px; padding: 10px 14px; border-radius: 10px; border: none; background: #222; color: #fff; }
+#status { margin: 4px 0 0; font-size: 13px; color: #888; }
+a.btn { display: inline-block; padding: 10px 14px; background: #25d366; color: #fff; border-radius: 12px; text-decoration: none; }
