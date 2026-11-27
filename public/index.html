@@ -7,60 +7,49 @@
   <meta name="description" content="Talk to your electricity bill in Gujarati, Hindi or English.">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg">
-  <meta name="theme-color" content="#0f766e">
+  <meta name="theme-color" content="#0b1514">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="app">
-    <header class="top">
-      <div class="brand"><img src="icon.svg" alt="" width="34" height="34"><span>Tally</span></div>
-      <div class="langs" role="group" aria-label="Language">
-        <button data-lang="en" class="on">EN</button>
-        <button data-lang="hi">हिं</button>
-        <button data-lang="gu">ગુ</button>
-      </div>
-    </header>
+  <div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
+  <header class="top">
+    <div class="brand"><img src="icon.svg" alt="" width="32" height="32"><span>Tally</span><small>talk to your bill</small></div>
+    <div class="langs" role="group" aria-label="Language">
+      <button data-lang="en" class="on">EN</button>
+      <button data-lang="hi">हिं</button>
+      <button data-lang="gu">ગુ</button>
+    </div>
+  </header>
 
-    <section id="hero" class="hero">
-      <h1>Talk to your <em>bill</em>.</h1>
-      <p>Say your units and amount. Tally explains why it changed, checks if it is fair, and helps you act.</p>
-      <ul class="feats">
-        <li>🗣 Gujarati · Hindi · English</li>
-        <li>🔍 Fair-bill check</li>
-        <li>💰 Savings in rupees</li>
-        <li>✉️ Complaint in one tap</li>
-      </ul>
+  <div id="layout">
+    <section class="stage" id="stage" aria-label="Voice">
+      <button id="mic" class="orbbtn" aria-label="Tap to talk">
+        <canvas id="orb" width="480" height="480"></canvas>
+        <span id="orbhint">Tap to talk</span>
+      </button>
+      <p id="say" class="say" aria-live="polite">Talk to your <em>bill</em>.</p>
+      <p id="you" class="you" aria-live="polite"></p>
+      <ol id="steps" class="steps" hidden><li>Units</li><li>Last month</li><li>Amount</li><li>Confirm</li><li>Usage</li><li>Dashboard</li></ol>
+      <div id="choices" class="choices"></div>
+      <div id="hints" class="hints" hidden></div>
+      <p id="status" class="status"></p>
     </section>
 
-    <ol id="steps" class="steps" aria-label="Progress" hidden>
-      <li>Units</li><li>Last month</li><li>Amount</li><li>Confirm</li><li>Usage</li><li>Help</li>
-    </ol>
-
-    <main>
-      <section id="chat" aria-live="polite"></section>
-      <section id="choices"></section>
-    </main>
+    <section id="panels" class="panels" aria-label="Dashboard"></section>
   </div>
 
-  <footer class="dock">
-    <div id="heard" aria-live="polite"></div>
-    <div class="dockrow">
-      <form id="textform">
-        <input id="textin" placeholder="Type instead" autocomplete="off" aria-label="Type your answer">
-        <button type="submit" aria-label="Send">➤</button>
-      </form>
-      <button id="mic" aria-label="Tap and speak">
-        <span class="ring"></span>
-        <span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
-        <svg class="micicon" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path fill="currentColor" d="M12 15a3.5 3.5 0 0 0 3.5-3.5v-6a3.5 3.5 0 0 0-7 0v6A3.5 3.5 0 0 0 12 15Zm6-3.5a1 1 0 1 0-2 0 4 4 0 0 1-8 0 1 1 0 1 0-2 0 6 6 0 0 0 5 5.92V20H9.5a1 1 0 1 0 0 2h5a1 1 0 1 0 0-2H13v-2.58A6 6 0 0 0 18 11.5Z"/></svg>
-      </button>
-    </div>
-    <p id="status"></p>
-  </footer>
+  <details id="logbox" class="logbox"><summary>Transcript</summary><ol id="log"></ol></details>
+
+  <form id="textform" class="dock">
+    <input id="textin" placeholder="Or type your answer" autocomplete="off" aria-label="Type your answer">
+    <button type="submit" aria-label="Send">➤</button>
+  </form>
 
   <script src="i18n.js"></script>
   <script src="numbers.js"></script>
   <script src="tariff.js"></script>
+  <script src="sim.js"></script>
+  <script src="viz.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
