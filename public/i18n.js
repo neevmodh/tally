@@ -12,6 +12,9 @@ const APPLIANCES = {
 
 const T = {
   en: {
+    anomaly: "One more thing. For {u} units we would expect about {e} rupees, but your bill is {a} rupees. That is {pct} percent higher, so a complaint may be worth filing.",
+    fair: "Your bill of {a} rupees looks in line with {u} units, which we would expect to be about {e} rupees.",
+    expected: "Expected",
     greet: "Namaste! I am Tally. I will help you understand your electricity bill. How many units did you use this month?",
     askPrev: "And how many units did you use last month?",
     askAmt: "What is the bill amount in rupees?",
@@ -67,6 +70,9 @@ const T = {
     },
   },
   hi: {
+    anomaly: "एक बात और। {u} यूनिट पर लगभग {e} रुपये का बिल होना चाहिए, लेकिन आपका बिल {a} रुपये है। यह {pct} प्रतिशत ज़्यादा है, इसलिए शिकायत करना ठीक रहेगा।",
+    fair: "आपका {a} रुपये का बिल {u} यूनिट के हिसाब से ठीक लगता है, जो लगभग {e} रुपये होना चाहिए।",
+    expected: "अपेक्षित",
     greet: "नमस्ते! मैं टैली हूँ। मैं आपका बिजली का बिल समझने में मदद करूँगा। इस महीने आपने कितनी यूनिट बिजली इस्तेमाल की?",
     askPrev: "और पिछले महीने कितनी यूनिट थी?",
     askAmt: "बिल कितने रुपये का है?",
@@ -122,6 +128,9 @@ const T = {
     },
   },
   gu: {
+    anomaly: "એક વાત વધુ. {u} યુનિટ પર લગભગ {e} રૂપિયાનું બિલ હોવું જોઈએ, પણ તમારું બિલ {a} રૂપિયા છે. આ {pct} ટકા વધારે છે, તેથી ફરિયાદ કરવી યોગ્ય રહેશે.",
+    fair: "તમારું {a} રૂપિયાનું બિલ {u} યુનિટ પ્રમાણે બરાબર લાગે છે, જે લગભગ {e} રૂપિયા હોવું જોઈએ.",
+    expected: "અપેક્ષિત",
     greet: "નમસ્તે! હું ટેલી છું. હું તમને તમારું લાઇટ બિલ સમજવામાં મદદ કરીશ. આ મહિને તમે કેટલા યુનિટ વીજળી વાપરી?",
     askPrev: "અને ગયા મહિને કેટલા યુનિટ હતા?",
     askAmt: "બિલ કેટલા રૂપિયાનું છે?",

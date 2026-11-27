@@ -26,9 +26,15 @@ The reply language follows the script you speak or type (Gujarati, Devanagari or
 
 - Speech in and out: the browser's built-in Web Speech API (no keys). Chrome sends audio to Google for recognition.
   Gujarati speech output depends on the voices installed on the device; text is always shown on screen.
-- Logic: rule-based and offline (`public/app.js`, `public/i18n.js`). Savings use an illustrative Rs 5.5 per unit, not an official tariff.
+- Logic: rule-based and offline (`public/app.js`, `public/i18n.js`). Savings and the "is my bill too high?" check use an illustrative slab tariff (`public/tariff.js`), not an official DISCOM tariff.
 - Server: dependency-free Node (`server.js`) serving the PWA and storing drafted complaints in `data/complaints.json`.
 
 ## Limits
 
 Prototype only. Spoken number words are parsed for English and Hindi (not Gujarati yet); Gujarati numbers must come as digits. No real DISCOM integration.
+
+## Tests
+
+    node test-numbers.js && node test-tariff.js && node test-flow.js
+
+No dependencies needed. `test-flow.js` drives the real conversation logic against a fake DOM.

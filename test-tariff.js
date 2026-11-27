@@ -1,0 +1,13 @@
+const { estimateBill, marginalRate, compareBill } = require("./public/tariff.js");
+let bad = 0;
+const ok = (name, cond) => { if (!cond) { bad++; console.log("FAIL", name); } };
+ok("zero units is just the fixed charge", estimateBill(0) === 25);
+ok("bill rises with units", estimateBill(100) < estimateBill(250) && estimateBill(250) < estimateBill(400));
+ok("50 units", estimateBill(50) === Math.round(50 * 3.05 * 1.15 + 25));
+ok("marginal rate climbs across slabs", marginalRate(20) < marginalRate(300));
+ok("marginal above 250 is 5.2 + duty", Math.abs(marginalRate(300) - 5.98) < 0.6);
+const hi = compareBill(200, 2000);
+ok("inflated bill flagged high", hi.diffPct > 100);
+ok("matching bill near zero", Math.abs(compareBill(200, estimateBill(200)).diffPct) <= 1);
+console.log(bad ? bad + " failed" : "tariff tests passed");
+process.exit(bad ? 1 : 0);

@@ -24,3 +24,4 @@ footer { position: fixed; left: 0; right: 0; bottom: 0; background: #fff; border
 #textform button { font-size: 16px; padding: 10px 14px; border-radius: 10px; border: none; background: #222; color: #fff; }
 #status { margin: 4px 0 0; font-size: 13px; color: #888; }
 a.btn { display: inline-block; padding: 10px 14px; background: #25d366; color: #fff; border-radius: 12px; text-decoration: none; }
+.small { font-size: 14px; color: #666; margin-top: 4px; }

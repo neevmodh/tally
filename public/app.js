@@ -1,5 +1,4 @@
 // Tally - voice-first flow. Uses the browser's built-in speech recognition and synthesis (no API keys).
-const RATE_PER_UNIT = 5.5; // illustrative marginal rupees per unit, for savings estimates only
 const $ = (id) => document.getElementById(id);
 const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -124,13 +123,24 @@ function analyse() {
   const { units, prev, amount } = state.bill;
   const diffUnits = units - prev;
   const pct = prev ? Math.round(Math.abs(diffUnits) / prev * 100) : 0;
-  const diffRupees = Math.round(Math.abs(diffUnits) * RATE_PER_UNIT);
-  return { diffUnits, pct, diffRupees, up: diffUnits > 0 };
+  const diffRupees = Math.abs(estimateBill(units) - estimateBill(prev));
+  const check = compareBill(units, amount); // expected bill vs what they were charged
+  return { diffUnits, pct, diffRupees, up: diffUnits > 0, check };
 }
 function topTips() {
-  // main appliance first, then two general ones, with rupee savings
+  // main appliance first, then the next two, valued at the rupee rate of the user's current slab
+  const rate = marginalRate(state.bill.units);
   const order = [state.appliance, ...Object.keys(APPLIANCES).filter((k) => k !== state.appliance)].slice(0, 3);
-  return order.map((k) => ({ key: k, rupees: Math.round(APPLIANCES[k].saveUnits * RATE_PER_UNIT) }));
+  return order.map((k) => ({ key: k, rupees: Math.round(APPLIANCES[k].saveUnits * rate) }));
+}
+function barChart(prev, units) {
+  const max = Math.max(prev, units, 1);
+  const bar = (v, y, color, label) =>
+    `<rect x="70" y="${y}" width="${Math.round((v / max) * 210)}" height="22" rx="4" fill="${color}"/>` +
+    `<text x="64" y="${y + 16}" text-anchor="end" font-size="13">${label}</text>` +
+    `<text x="${76 + Math.round((v / max) * 210)}" y="${y + 16}" font-size="13">${v}</text>`;
+  return `<svg viewBox="0 0 340 62" width="100%" role="img" aria-label="${prev} to ${units} units">` +
+    bar(prev, 4, "#d6b46a", t("prev").slice(0, 10)) + bar(units, 34, units > prev ? "#c0392b" : "#1e8449", "now") + `</svg>`;
 }
 
 // ---------- conversation ----------
@@ -208,9 +218,15 @@ function chooseAppliance(k) {
   $("cards").innerHTML = "";
   addCard(`<h3>${t("cardBill")}</h3><div class="big">₹${amount}</div>
     <div>${units} ${t("units")} · ${t("prev")}: ${prev} ${t("units")}
-    <span class="${a.up ? "up" : "down"}"> ${a.up ? "▲" : "▼"} ${a.pct}%</span></div>`);
+    <span class="${a.up ? "up" : "down"}"> ${a.up ? "▲" : "▼"} ${a.pct}%</span></div>
+    ${barChart(prev, units)}
+    <div class="small">${t("expected")}: ₹${a.check.expected} (${a.check.diffPct >= 0 ? "+" : ""}${a.check.diffPct}%)</div>`);
   showMenu();
-  say(text, () => say(t("menu"), startListening));
+  const flagged = a.check.diffPct >= 25;
+  const verdict = flagged
+    ? t("anomaly", { u: units, e: a.check.expected, a: amount, pct: a.check.diffPct })
+    : t("fair", { u: units, e: a.check.expected, a: amount });
+  say(text, () => say(verdict, () => say(t("menu"), startListening)));
 }
 
 function showMenu() {
