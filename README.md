@@ -14,7 +14,7 @@ No API keys or `.env` file are needed. Without Docker: `node server.js` (Node 18
 
 ## Voice flow
 
-1. Say this month's units, last month's units and the bill amount (digits in any of the three languages).
+1. Say this month's units, last month's units and the bill amount (digits, or number words in English and Hindi).
 2. The app repeats the numbers back for confirmation.
 3. Say what ran more (AC, cooler, geyser, fridge, motor, guests).
 4. It explains the change in plain words, then offers: savings tips in rupees, a drafted complaint saved to the server,
@@ -31,4 +31,4 @@ The reply language follows the script you speak or type (Gujarati, Devanagari or
 
 ## Limits
 
-Prototype only. Numbers are spoken as digits; spoken number words are not parsed yet. No real DISCOM integration.
+Prototype only. Spoken number words are parsed for English and Hindi (not Gujarati yet); Gujarati numbers must come as digits. No real DISCOM integration.

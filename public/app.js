@@ -105,7 +105,8 @@ function toAscii(s) {
 }
 function parseNumber(text) {
   const m = toAscii(text).replace(/,/g, "").match(/\d+(\.\d+)?/);
-  return m ? Math.round(parseFloat(m[0])) : null;
+  if (m) return Math.round(parseFloat(m[0]));
+  return parseSpokenNumber(text); // "teen sau bees", "तीन सौ बीस", "three hundred twenty"
 }
 function has(text, list) {
   const low = text.toLowerCase();
